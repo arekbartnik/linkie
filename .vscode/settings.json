@@ -1,0 +1,9 @@
+{
+	"cssVariables.lookupFiles": [
+	  "**/*.css",
+	  "node_modules/tailwindcss/index.css"
+	],
+	"cssVariables.languages": [
+		"tailwindcss",
+	]
+  }

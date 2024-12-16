@@ -1,9 +1,11 @@
 "use server";
 
-import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
+import { encodedRedirect } from "@/utils/utils";
+import { createSafeActionClient } from "next-safe-action";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -30,13 +32,13 @@ export const signUpAction = async (formData: FormData) => {
   if (error) {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/sign-up", error.message);
-  } else {
-    return encodedRedirect(
-      "success",
-      "/sign-up",
-      "Thanks for signing up! Please check your email for a verification link.",
-    );
   }
+
+  return encodedRedirect(
+    "success",
+    "/sign-up",
+    "Thanks for signing up! Please check your email for a verification link.",
+  );
 };
 
 export const signInAction = async (formData: FormData) => {
@@ -132,3 +134,31 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+const schema = z.object({
+  url: z.string().url(),
+  name: z.string(),
+});
+
+export const addLinkAction = createSafeActionClient()
+  .schema(schema)
+  .action(async ({ parsedInput }) => {
+    const { url, name } = parsedInput;
+
+    const supabase = await createClient();
+
+    try {
+      const response = await supabase.from("links").insert({
+        url,
+        name,
+        preview_image: "",
+      });
+    } catch (error) {
+      console.error("Error inserting link:", error);
+    }
+
+    return {
+      url,
+      name,
+    };
+  });

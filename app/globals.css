@@ -53,12 +53,69 @@
 			height: 0;
 		}
 	}
+
+	--shadow-color: 220 3% 15%;
+	--shadow-strength: 1%;
+	--inner-shadow-highlight: inset 0 -0.5px 0 0 #fff, inset 0 0.5px 0 0 #0001;
+	--shadow-1: 0 1px 2px -1px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%));
+	--shadow-2: 0 3px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)), 0 7px
+		14px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%));
+	--shadow-3:
+		0 -1px 3px 0
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 1px 2px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 2px 5px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 4px 12px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
+		0 12px 15px -5px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
+	--shadow-4:
+		0 -2px 5px 0
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 1px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 2px 2px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 9px 9px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
+		0 16px 16px -2px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 6%));
+	--shadow-5:
+		0 -1px 2px 0
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 2px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 10px 10px -2px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 20px 20px -2px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
+		0 40px 40px -2px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
+	--shadow-6:
+		0 -1px 2px 0
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 3px 2px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 7px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 12px 10px -2px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 22px 18px -2px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
+		0 41px 33px -2px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 6%)),
+		0 100px 80px -2px
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
+	--inner-shadow-0: inset 0 0 0 1px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%));
+	--inner-shadow-1: inset 0 1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
+		var(--inner-shadow-highlight);
+	--inner-shadow-2: inset 0 1px 4px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
+		var(--inner-shadow-highlight);
+	--inner-shadow-3: inset 0 2px 8px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)),
+		var(--inner-shadow-highlight);
+	--inner-shadow-4: inset 0 2px 14px 0
+		hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%)), var(--inner-shadow-highlight);
 }
 
 @utility container {
 	margin-inline: auto;
 	padding-inline: 2rem;
-	@media (width >= theme(--breakpoint-sm)) {
+	@media (width >= var(--breakpoint-sm)) {
 		max-width: none;
 	}
 	@media (width >= 1400px) {
@@ -66,6 +123,28 @@
 	}
 }
 
+@utility gradient-overlay {
+	background-image: linear-gradient(
+		90deg,
+		rgb(99.608% 99.608% 99.608%) 0%,
+		rgb(99.612% 99.612% 99.612% / 0.9903926402016152) 6.25%,
+		rgb(99.623% 99.623% 99.623% / 0.9619397662556434) 12.5%,
+		rgb(99.641% 99.641% 99.641% / 0.9157348061512727) 18.75%,
+		rgb(99.665% 99.665% 99.665% / 0.8535533905932737) 25%,
+		rgb(99.695% 99.695% 99.695% / 0.7777851165098011) 31.25%,
+		rgb(99.729% 99.729% 99.729% / 0.6913417161825449) 37.5%,
+		rgb(99.766% 99.766% 99.766% / 0.5975451610080642) 43.75%,
+		rgb(99.804% 99.804% 99.804% / 0.5) 50%,
+		rgb(99.842% 99.842% 99.842% / 0.4024548389919359) 56.25%,
+		rgb(99.879% 99.879% 99.879% / 0.3086582838174552) 62.5%,
+		rgb(99.913% 99.913% 99.913% / 0.22221488349019902) 68.75%,
+		rgb(99.943% 99.943% 99.943% / 0.14644660940672627) 75%,
+		rgb(99.967% 99.967% 99.967% / 0.08426519384872733) 81.25%,
+		rgb(99.985% 99.985% 99.985% / 0.03806023374435663) 87.5%,
+		rgb(99.996% 99.996% 99.996% / 0.009607359798384785) 93.75%,
+		rgb(100% 100% 100% / 0) 100%
+	);
+}
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -86,7 +165,7 @@
 
 @layer base {
 	:root {
-		--background: 0 0% 100%;
+		--background: var(--color-stone-100);
 		--foreground: 0 0% 3.9%;
 		--card: 0 0% 100%;
 		--card-foreground: 0 0% 3.9%;
@@ -143,7 +222,7 @@
 
 @layer base {
 	body {
-		background-color: var(--color-stone-100);
-		color: var(--text-foreground);
+		background-color: var(--background);
+		color: var(--foreground);
 	}
 }

@@ -7,6 +7,11 @@ import { buttonVariants } from "./ui/button";
 
 export function GoBack() {
 	const pathname = usePathname();
+	const splitPath = pathname.split("/").slice(0, -1).join("/");
+
+	if (splitPath.length === 0) {
+		return null;
+	}
 
 	return (
 		<Link

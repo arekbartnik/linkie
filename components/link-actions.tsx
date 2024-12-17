@@ -1,3 +1,6 @@
+"use client";
+
+import { removeLinkAction } from "@/lib/actions";
 import { Archive, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -9,7 +12,7 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-export function LinkActions() {
+export function LinkActions({ id }: { id: number }) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -27,7 +30,7 @@ export function LinkActions() {
 					Archive
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem className="text-red-500">
+				<DropdownMenuItem className="text-red-500" onClick={() => removeLinkAction({ id })}>
 					<Trash2 className="mr-2 size-4" />
 					Remove
 				</DropdownMenuItem>

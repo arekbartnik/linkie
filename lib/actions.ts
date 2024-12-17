@@ -2,7 +2,9 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
-import { createSafeActionClient } from "next-safe-action";
+import mql from "@microlink/mql";
+import { revalidateTag } from "next/cache";
+import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -140,25 +142,91 @@ const schema = z.object({
   name: z.string(),
 });
 
-export const addLinkAction = createSafeActionClient()
-  .schema(schema)
-  .action(async ({ parsedInput }) => {
-    const { url, name } = parsedInput;
+export const addLinkAction = async (
+  { url, name }: { url: string; name: string },
+) => {
+  const supabase = await createClient();
+  const currentUser = await supabase.auth.getUser();
 
-    const supabase = await createClient();
+  const { status, data } = await mql(url, {
+    meta: true,
+    screenshot: true,
+  });
 
-    try {
-      const response = await supabase.from("links").insert({
-        url,
-        name,
-        preview_image: "",
-      });
-    } catch (error) {
-      console.error("Error inserting link:", error);
+  if (!data.screenshot?.url) {
+    return encodedRedirect("error", "/links", "No screenshot URL available");
+  }
+
+  try {
+    const { data: insertData } = await supabase.from("links").insert({
+      url,
+      name: data.title ?? name,
+      preview_image: data.screenshot?.url ?? null,
+      created_by: currentUser.data.user?.id,
+      data,
+    }).select();
+
+    const getScreenshot = await fetch(data.screenshot.url);
+    const screenshot = await getScreenshot.blob();
+    const fileName = `screenshot-${insertData?.[0].id}.png`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("linkie")
+      .upload(fileName, screenshot);
+
+    if (uploadError) {
+      console.error("Error uploading screenshot:", uploadError);
+      return;
+    }
+  } catch (error) {
+    console.error("Error processing link:", error);
+  }
+
+  return redirect("/links");
+};
+
+export const removeLinkAction = async (
+  { id }: { id: number },
+) => {
+  const supabase = await createClient();
+
+  try {
+    const response = await supabase.from("links").delete().eq("id", id);
+  } catch (error) {
+    console.error("Error deleting link:", error);
+  }
+
+  return revalidateTag("links");
+};
+
+export async function getLinks() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("links")
+    .select("id, name, url, preview_image, tags (id, name)")
+    .order("id", { ascending: false });
+
+  return data?.map((link) => {
+    const isScreenshot = link.id === 65;
+
+    if (isScreenshot) {
+      const { data: screenshotUrl } = supabase.storage.from("linkie")
+        .getPublicUrl("screenshot-65.png", {
+          transform: {
+            width: 600,
+            height: 600,
+            quality: 90,
+          },
+        });
+
+      return {
+        ...link,
+        preview_image: screenshotUrl.publicUrl,
+      };
     }
 
     return {
-      url,
-      name,
+      ...link,
     };
   });
+}

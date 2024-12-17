@@ -8,14 +8,11 @@ import { useState } from "react";
 export default function AddLinkPage() {
 	const [url, setUrl] = useState("");
 	const [name, setName] = useState("");
-	const router = useRouter();
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 
 		await addLinkAction({ url, name });
-
-		router.push("/links");
 	};
 
 	return (

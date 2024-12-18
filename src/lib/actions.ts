@@ -195,8 +195,6 @@ export const removeLinkAction = async (
   } catch (error) {
     console.error("Error deleting link:", error);
   }
-
-  return revalidateTag("links");
 };
 
 export async function getLinks() {

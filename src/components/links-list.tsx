@@ -4,7 +4,7 @@ import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { CopyUrlButton } from "./copy-url-button";
 import { LinkActions } from "./link-actions";
-import { buttonVariants } from "./ui/button";
+import { buttonStyles } from "./ui/button-styles";
 import { Card } from "./ui/card";
 
 export async function LinksList() {
@@ -17,8 +17,8 @@ export async function LinksList() {
 				<Link
 					href="/links/add-link"
 					className={cn(
-						buttonVariants({ variant: "default", size: "lg" }),
-						"!bg-amber-300 text-black",
+						buttonStyles({ variant: "default", size: "lg" }),
+						"!bg-amber-300 text-black hover:!bg-amber-400",
 					)}
 				>
 					Add New Link

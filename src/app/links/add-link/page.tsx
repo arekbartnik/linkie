@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { addLinkAction } from "@/lib/actions";
 import { useRouter } from "next/navigation";
@@ -20,7 +21,10 @@ export default function AddLinkPage() {
 			<h1 className="text-3xl font-extrabold mb-8">Add New Link</h1>
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<div>
-					<label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-2">
+					<label
+						htmlFor="url"
+						className="block text-sm font-medium text-gray-700 mb-2"
+					>
 						URL
 					</label>
 					<Input
@@ -32,7 +36,10 @@ export default function AddLinkPage() {
 					/>
 				</div>
 				<div>
-					<label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+					<label
+						htmlFor="name"
+						className="block text-sm font-medium text-gray-700 mb-2"
+					>
 						Name
 					</label>
 					<Input
@@ -42,12 +49,12 @@ export default function AddLinkPage() {
 						onChange={(e) => setName(e.target.value)}
 					/>
 				</div>
-				<button
+				<Button
 					type="submit"
 					className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 				>
 					Add Link
-				</button>
+				</Button>
 			</form>
 		</div>
 	);

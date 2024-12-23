@@ -4,7 +4,7 @@ import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { CopyUrlButton } from "./copy-url-button";
 import { LinkActions } from "./link-actions";
-import { buttonStyles } from "./ui/button-styles";
+import { LinksHeader } from "./links-header";
 import { Card } from "./ui/card";
 
 export async function LinksList() {
@@ -12,28 +12,12 @@ export async function LinksList() {
 
 	return (
 		<div className="mx-auto max-w-2xl w-full">
-			<div className="flex justify-between items-center mb-8">
-				<h1 className="text-3xl font-extrabold">Links</h1>
-				<Link
-					href="/links/add-link"
-					className={cn(
-						buttonStyles({ variant: "default", size: "lg" }),
-						"!bg-amber-300 text-black hover:!bg-amber-400",
-					)}
-				>
-					Add New Link
-				</Link>
-			</div>
+			<LinksHeader />
 
-			{links?.map((link) => (
-				<Card
-					key={link.id}
-					className="relative mb-8 p-8 border-1 border-stone-300 flex gap-8 overflow-hidden"
-				>
+			{links?.map((link, index) => (
+				<Card key={link.id} className="relative mb-8 p-8 flex gap-8 overflow-hidden">
 					<div className="flex flex-col gap-2 flex-1 min-w-0">
-						<p className="text-xl font-semibold line-clamp-2 text-balance">
-							{link.name}
-						</p>
+						<p className="text-xl font-medium line-clamp-2 text-balance">{link.name}</p>
 
 						<div className="flex items-center gap-2">
 							<a
